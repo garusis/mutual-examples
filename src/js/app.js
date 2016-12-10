@@ -32,19 +32,75 @@
         });
 
     module
-        .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
-            $urlRouterProvider.otherwise('/login');
+        .config(['$stateProvider', '$urlRouterProvider',
+            function ($stateProvider, $urlRouterProvider) {
+                $urlRouterProvider.otherwise('/login');
 
-            $stateProvider
-                .state('login', {
-                    url: '/login',
-                    templateUrl: 'tpl/login.html'
-                });
-        }])
+                $stateProvider.defineState = function (stateName, stateDefinition) {
+                    if (!stateDefinition.params) {
+                        stateDefinition.params = {};
+                    }
+                    stateDefinition.params.allowByAuth = false;
+
+                    $stateProvider.state(stateName, stateDefinition);
+                    return $stateProvider;
+                };
+
+                $stateProvider
+                    .defineState('login', {
+                        url: '/login',
+                        templateUrl: 'tpl/login.html',
+                        data: {
+                            requireNoAuth: true
+                        }
+                    })
+                    .defineState('singup', {
+                        url: '/singup',
+                        templateUrl: 'tpl/singup.html',
+                        data: {
+                            requireNoAuth: true
+                        }
+                    })
+                    .defineState('email-confirm', {
+                        url: '/email-confirm',
+                        templateUrl: 'tpl/email-confirm.html',
+                        data: {
+                            requireNoAuth: true
+                        }
+                    })
+                    .defineState('home', {
+                        url: '/home',
+                        templateUrl: 'tpl/home.html',
+                        data: {
+                            requireAuth: true
+                        }
+                    });
+            }])
         .config(['OriginInterceptorProvider', function (OriginInterceptorProvider) {
             OriginInterceptorProvider.config({
                 origin: 'http://mutual-back-dev.herokuapp.com'
             });
+        }])
+        .run(['$rootScope', '$auth', '$state', function ($rootScope, $auth, $state) {
+            $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
+                var data = toState.data || {};
+                if (toParams.allowByAuth || (_.isNil(data.requireNoAuth) && _.isNil(data.requireAuth))) return;
+
+                event.preventDefault();
+                if ($auth.isAuthenticated()) {
+                    if (data.requireAuth) {
+                        toParams.allowByAuth = true;
+                        return $state.go(toState.name, toParams)
+                    }
+                    return $state.go('home');
+                }
+
+                if (data.requireNoAuth) {
+                    toParams.allowByAuth = true;
+                    return $state.go(toState.name, toParams)
+                }
+                $state.go('login');
+            });
         }]);
 
-})(angular.module('mutualexample', ['ionic']));
+})(angular.module('mutualexample', ['ionic', 'satellizer']));
