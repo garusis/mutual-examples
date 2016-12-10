@@ -3,6 +3,10 @@
  */
 ;!(function (module) {
 
+    module.constant('ROUTES', {
+        USER: '/app-user-accounts'
+    });
+
     module
         .provider('OriginInterceptor', function ($httpProvider) {
             var _options = {
@@ -22,7 +26,6 @@
                         return config;
                     },
                     response: function (response) {
-
                         return response;
                     }
                 }
@@ -34,7 +37,7 @@
     module
         .config(['$stateProvider', '$urlRouterProvider',
             function ($stateProvider, $urlRouterProvider) {
-                $urlRouterProvider.otherwise('/login');
+                $urlRouterProvider.otherwise('/signup');
 
                 $stateProvider.defineState = function (stateName, stateDefinition) {
                     if (!stateDefinition.params) {
@@ -54,9 +57,11 @@
                             requireNoAuth: true
                         }
                     })
-                    .defineState('singup', {
-                        url: '/singup',
-                        templateUrl: 'tpl/singup.html',
+                    .defineState('signup', {
+                        url: '/signup',
+                        templateUrl: 'tpl/signup.html',
+                        controller: 'SignupController',
+                        controllerAs: 'signupCtrl',
                         data: {
                             requireNoAuth: true
                         }
@@ -78,7 +83,7 @@
             }])
         .config(['OriginInterceptorProvider', function (OriginInterceptorProvider) {
             OriginInterceptorProvider.config({
-                origin: 'http://mutual-back-dev.herokuapp.com'
+                origin: 'http://localhost:3000/api'
             });
         }])
         .run(['$rootScope', '$auth', '$state', function ($rootScope, $auth, $state) {
