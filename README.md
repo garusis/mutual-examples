@@ -16,4 +16,9 @@ instalado un webserver o extensión similar para el navegador.
 
 El puerto de lite-server así como otras configuraciones pueden editarse en el fichero `bs-config.json`
 
+## Rutas basicas
 
+ 1. */login* Acceso a la vista de login
+ 2. */signup* Acceso a la vista de creacion de usuario
+ 3. */email-confirm* Acceso a la vista de confirmacion de email
+ 4. */home* Acceso a la pagina principal de un usuario logueado.
