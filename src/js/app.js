@@ -60,6 +60,8 @@
                     .defineState('login', {
                         url: '/login',
                         templateUrl: 'tpl/login.html',
+                        controller: 'LoginController',
+                        controllerAs: 'loginCtrl',
                         data: {
                             requireNoAuth: true
                         }
@@ -76,8 +78,8 @@
                     .defineState('email-confirm', {
                         url: '/email-confirm',
                         templateUrl: 'tpl/email-confirm.html',
-                        controller:'ConfirmController',
-                        controllerAs:'confCtrl',
+                        controller: 'ConfirmController',
+                        controllerAs: 'confCtrl',
                         data: {
                             requireNoAuth: true
                         }
@@ -85,6 +87,8 @@
                     .defineState('home', {
                         url: '/home',
                         templateUrl: 'tpl/home.html',
+                        controller:'HomeController',
+                        controllerAs:'homeCtrl',
                         data: {
                             requireAuth: true
                         }

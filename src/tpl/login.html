@@ -1,16 +1,22 @@
 <ion-view view-title="Acceso">
     <ion-content>
-        <form>
+        <form name="formLogin" novalidate ng-submit="formLogin.$valid && loginCtrl.login(loginCtrl.vm.loginData)">
             <div class="list">
                 <label class="item item-input item-stacked-label">
-                    <span class="input-label">First Name</span>
-                    <input type="text" placeholder="John">
+                    <span class="input-label"  ng-class="{'assertive':formLogin.username.$invalid}">
+                        Username
+                    </span>
+                    <input type="text" placeholder="username" name="username"
+                           ng-model="loginCtrl.vm.loginData.username" required>
                 </label>
                 <label class="item item-input item-stacked-label">
-                    <span class="input-label">Last Name</span>
-                    <input type="text" placeholder="Suhr">
+                    <span class="input-label"  ng-class="{'assertive':formLogin.password.$invalid}">
+                        Contraseña
+                    </span>
+                    <input type="text" placeholder="Contraseña" name="password"
+                           ng-model="loginCtrl.vm.loginData.password" required>
                 </label>
-                <button class="button button-full button-positive">
+                <button type="submit" class="button button-full button-positive">
                     Ingresar
                 </button>
             </div>

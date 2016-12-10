@@ -3,19 +3,15 @@
  */
 ;!(function (module) {
     module
-        .controller('LoginController', ['AppAuth', '$state',
+        .controller('HomeController', ['AppAuth', '$state',
             function (AppAuth, $state) {
-                var loginCtrl = this;
-                var vm = loginCtrl.vm = {};
-
-                vm.loginData = {};
-
-                loginCtrl.login = function (data) {
+                var homeCtrl = this;
+                homeCtrl.logout = function (data) {
                     AppAuth
-                        .login(data)
+                        .logout()
                         .then(function (response) {
-                            alert('Logueado :D');
-                            $state.go('home');
+                            alert('sesión cerrada');
+                            $state.go('login');
                         })
                         .catch(function (error) {
                             alert('error.');
