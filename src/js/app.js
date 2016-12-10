@@ -96,7 +96,7 @@
             }])
         .config(['OriginInterceptorProvider', function (OriginInterceptorProvider) {
             OriginInterceptorProvider.config({
-                origin: 'http://localhost:3000/api'
+                origin: 'http://mutual-back-dev.herokuapp.com/api'
             });
         }])
         .run(['$rootScope', 'AppAuth', '$state', function ($rootScope, AppAuth, $state) {
