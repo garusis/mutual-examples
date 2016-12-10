@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/garusis/mutual-examples/issues"
   },
-  "homepage": "https://github.com/garusis/mutual-examples#readme"
+  "homepage": "https://github.com/garusis/mutual-examples#readme",
+  "devDependencies": {
+    "lite-server": "^2.2.2"
+  }
 }
