@@ -4,11 +4,11 @@
 ;!(function (module) {
 
     module.constant('ROUTES', {
-        USER: '/app-user-accounts'
+        USER: 'app-user-accounts'
     });
 
     module
-        .provider('OriginInterceptor', function ($httpProvider) {
+        .provider('OriginInterceptor', ['$httpProvider', function ($httpProvider) {
             var _options = {
                 origin: location.origin
             };
@@ -17,22 +17,29 @@
                 _options = angular.extend(_options, options);
             };
 
-            this.$get = [function () {
+            this.$get = ['$q', '$timeout', function ($q, $timeout) {
+                function isStaticResource(url) {
+                    return /\..*$/.test(url)
+                }
+
                 return {
                     request: function (config) {
-                        if (!/\..*$/.test(config.url)) {
+                        if (!isStaticResource(config.url)) {
                             config.url = _options.origin + '/' + config.url;
                         }
                         return config;
                     },
                     response: function (response) {
-                        return response;
+                        if (isStaticResource(response.config.url)) {
+                            return response;
+                        }
+                        return response.data;
                     }
                 }
             }];
 
             $httpProvider.interceptors.push('OriginInterceptor');
-        });
+        }]);
 
     module
         .config(['$stateProvider', '$urlRouterProvider',
@@ -86,13 +93,13 @@
                 origin: 'http://localhost:3000/api'
             });
         }])
-        .run(['$rootScope', '$auth', '$state', function ($rootScope, $auth, $state) {
+        .run(['$rootScope', 'AppAuth', '$state', function ($rootScope, AppAuth, $state) {
             $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
                 var data = toState.data || {};
                 if (toParams.allowByAuth || (_.isNil(data.requireNoAuth) && _.isNil(data.requireAuth))) return;
 
                 event.preventDefault();
-                if ($auth.isAuthenticated()) {
+                if (AppAuth.isAuthenticated()) {
                     if (data.requireAuth) {
                         toParams.allowByAuth = true;
                         return $state.go(toState.name, toParams)
@@ -108,4 +115,4 @@
             });
         }]);
 
-})(angular.module('mutualexample', ['ionic', 'satellizer']));
+})(angular.module('mutualexample', ['ionic', 'ngStorage']));
