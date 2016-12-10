@@ -3,19 +3,19 @@
  */
 ;!(function (module) {
     module
-        .controller('SignupController', ['AppAuth', '$state',
+        .controller('ConfirmController', ['AppAuth', '$state',
             function (AppAuth, $state) {
-                var signupCtrl = this;
-                var vm = signupCtrl.vm = {};
+                var confCtrl = this;
+                var vm = confCtrl.vm = {};
 
-                vm.signupData = {};
+                vm.confirmData = {};
 
-                signupCtrl.signup = function (data) {
+                confCtrl.confirm = function (data) {
                     AppAuth
-                        .signup(data)
+                        .confirm(data.uid, data.token)
                         .then(function (response) {
-                            alert('Registrado, revise su correo para confirmar el email.');
-                            $state.go('email-confirm');
+                            alert('Correo confirmado.');
+                            $state.go('login');
                         })
                         .catch(function (error) {
                             alert('error.');

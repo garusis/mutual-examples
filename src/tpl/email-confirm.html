@@ -1,16 +1,22 @@
-<ion-view view-title="Registro">
+<ion-view view-title="Confirmación de Email">
     <ion-content>
-        <form>
+        <form name="formConfirm" novalidate ng-submit="formConfirm.$valid && confCtrl.confirm(confCtrl.vm.confirmData)">
             <div class="list">
                 <label class="item item-input item-stacked-label">
-                    <span class="input-label">UID</span>
-                    <input type="text">
+                    <span class="input-label" ng-class="{'assertive':formConfirm.uid.$invalid}">
+                        UID
+                    </span>
+                    <input type="text" placeholder="UID recibido" name="uid"
+                           ng-model="confCtrl.vm.confirmData.uid" required>
                 </label>
                 <label class="item item-input item-stacked-label">
-                    <span class="input-label">Codigo de Confirmación</span>
-                    <input type="text">
+                    <span class="input-label" ng-class="{'assertive':formConfirm.token.$invalid}">
+                        Codigo de Confirmación
+                    </span>
+                    <input type="text" placeholder="Codigo recibido" name="token"
+                           ng-model="confCtrl.vm.confirmData.token" required>
                 </label>
-                <button class="button button-full button-positive">
+                <button type="submit" class="button button-full button-positive">
                     Confirma tu correo
                 </button>
             </div>

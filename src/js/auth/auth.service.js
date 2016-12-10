@@ -27,6 +27,9 @@
                             return data;
                         });
                 };
+                AppAuth.confirm = function (uid, confirmToken) {
+                    return $http.get(ROUTES.USER+'/confirm', {params:{uid:uid, token:confirmToken}});
+                };
                 AppAuth.isAuthenticated = function () {
                     return !!token;
                 };

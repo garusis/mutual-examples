@@ -76,6 +76,8 @@
                     .defineState('email-confirm', {
                         url: '/email-confirm',
                         templateUrl: 'tpl/email-confirm.html',
+                        controller:'ConfirmController',
+                        controllerAs:'confCtrl',
                         data: {
                             requireNoAuth: true
                         }

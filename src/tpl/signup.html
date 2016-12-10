@@ -1,6 +1,6 @@
 <ion-view view-title="Registro">
     <ion-content>
-        <form name="formSignup" ng-init="lol=false" novalidate ng-submit="formSignup.$valid && signupCtrl.signup(signupCtrl.vm.signupData)">
+        <form name="formSignup" novalidate ng-submit="formSignup.$valid && signupCtrl.signup(signupCtrl.vm.signupData)">
             <div class="list">
                 <label class="item item-input item-stacked-label">
                     <span class="input-label" ng-class="{'assertive':formSignup.name.$invalid}">
