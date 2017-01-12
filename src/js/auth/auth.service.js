@@ -13,8 +13,17 @@
                 _options = angular.extend(_options, options);
             };
 
+            var AppAuth = {};
+
+            AppAuth.assingHeaders = function (obj) {
+                if (token) {
+                    obj[_options.headerToken] = token;
+                }
+                return obj;
+            };
+
             this.$get = ['$http', 'ROUTES', '$q', '$localStorage', function ($http, ROUTES, $q, $localStorage) {
-                var AppAuth = {};
+
 
                 AppAuth.signup = function (data) {
                     return $http.post(ROUTES.USER, data);
@@ -27,8 +36,16 @@
                             return data;
                         });
                 };
+                AppAuth.loginAdmin = function (data) {
+                    return $http.post(ROUTES.ADMIN + '/login?include=user', data)
+                        .then(function (data) {
+                            $localStorage['auth.token'] = token = data.id;
+                            $localStorage['auth.userId'] = data.user.id;
+                            return data;
+                        });
+                };
                 AppAuth.confirm = function (uid, confirmToken) {
-                    return $http.get(ROUTES.USER+'/confirm', {params:{uid:uid, token:confirmToken}});
+                    return $http.get(ROUTES.USER + '/confirm', {params: {uid: uid, token: confirmToken}});
                 };
                 AppAuth.isAuthenticated = function () {
                     return !!token;
@@ -46,15 +63,14 @@
                     return deferred.promise;
                 };
 
+
                 return AppAuth;
             }];
 
             $httpProvider.interceptors.push([function () {
                 return {
                     request: function (config) {
-                        if (token) {
-                            config.headers[_options.headerToken] = token;
-                        }
+                        AppAuth.assingHeaders(config.headers);
                         return config;
                     }
                 }

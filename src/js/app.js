@@ -4,7 +4,12 @@
 ;!(function (module) {
 
     module.constant('ROUTES', {
-        USER: 'app-user-accounts'
+        ROOT: 'http://mutual-back-dev.herokuapp.com/api',
+        USER: 'app-user-accounts',
+        ADMIN: 'admin-accounts',
+        UPLOAD: {
+            ICONS: 'files/icons'
+        }
     });
 
     module
@@ -24,13 +29,14 @@
 
                 return {
                     request: function (config) {
-                        if (!isStaticResource(config.url)) {
+                        config.isStaticResource = isStaticResource(config.url);
+                        if (!config.isStaticResource) {
                             config.url = _options.origin + '/' + config.url;
                         }
                         return config;
                     },
                     response: function (response) {
-                        if (isStaticResource(response.config.url)) {
+                        if (response.config.isStaticResource) {
                             return response;
                         }
                         return response.data;
@@ -66,6 +72,15 @@
                             requireNoAuth: true
                         }
                     })
+                    .defineState('login_admin', {
+                        url: '/login_admin',
+                        templateUrl: 'tpl/login.html',
+                        controller: 'LoginAdminController',
+                        controllerAs: 'loginCtrl',
+                        data: {
+                            requireNoAuth: true
+                        }
+                    })
                     .defineState('signup', {
                         url: '/signup',
                         templateUrl: 'tpl/signup.html',
@@ -84,19 +99,28 @@
                             requireNoAuth: true
                         }
                     })
+                    .defineState('upload', {
+                        url: '/upload',
+                        templateUrl: 'tpl/upload.html',
+                        controller: 'UploadController',
+                        controllerAs: 'upCtrl',
+                        data: {
+                            requireAuth: true
+                        }
+                    })
                     .defineState('home', {
                         url: '/home',
                         templateUrl: 'tpl/home.html',
-                        controller:'HomeController',
-                        controllerAs:'homeCtrl',
+                        controller: 'HomeController',
+                        controllerAs: 'homeCtrl',
                         data: {
                             requireAuth: true
                         }
                     });
             }])
-        .config(['OriginInterceptorProvider', function (OriginInterceptorProvider) {
+        .config(['OriginInterceptorProvider', 'ROUTES', function (OriginInterceptorProvider, ROUTES) {
             OriginInterceptorProvider.config({
-                origin: 'http://mutual-back-dev.herokuapp.com/api'
+                origin: ROUTES.ROOT
             });
         }])
         .run(['$rootScope', 'AppAuth', '$state', function ($rootScope, AppAuth, $state) {
@@ -121,4 +145,4 @@
             });
         }]);
 
-})(angular.module('mutualexample', ['ionic', 'ngStorage']));
+})(angular.module('mutualexample', ['ionic', 'ngStorage', 'angularFileUpload']));

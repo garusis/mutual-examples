@@ -1,0 +1,17 @@
+<ion-view view-title="Subir Archivo">
+    <ion-content>
+        <form name="formLogin" novalidate ng-submit="upCtrl.vm.uploader.getNotUploadedItems().length && upCtrl.vm.uploader.uploadAll()">
+            <div class="list">
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label"  ng-class="{'assertive':formLogin.username.$invalid}">
+                        File
+                    </span>
+                    <input nv-file-select uploader="upCtrl.vm.uploader" type="file" placeholder="Seleccione" />
+                </label>
+                <button type="submit" class="button button-full button-positive" ng-disabled="!upCtrl.vm.uploader.getNotUploadedItems().length">
+                    Ingresar
+                </button>
+            </div>
+        </form>
+    </ion-content>
+</ion-view>
