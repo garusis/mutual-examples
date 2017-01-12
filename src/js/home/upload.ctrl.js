@@ -71,6 +71,7 @@
                 // --------------------
                 uploader.onCompleteAll = function () {
                     console.info('Complete all');
+                    $state.go('files');
                 };
                 // --------------------
 

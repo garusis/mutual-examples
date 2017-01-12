@@ -1,0 +1,11 @@
+<ion-view view-title="Acceso">
+    <ion-content>
+        <div class="list">
+            <a class="item item-avatar" ng-click="false" ng-repeat="file in fileCtrl.vm.files">
+                <img ng-src="{{file.url}}">
+                <h2>{{file.name}}</h2>
+                <p></p>
+            </a>
+        </div>
+    </ion-content>
+</ion-view>

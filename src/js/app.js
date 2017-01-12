@@ -4,11 +4,13 @@
 ;!(function (module) {
 
     module.constant('ROUTES', {
-        ROOT: 'http://mutual-back-dev.herokuapp.com/api',
+        ROOT: 'http://localhost:3000/api',
         USER: 'app-user-accounts',
         ADMIN: 'admin-accounts',
         UPLOAD: {
-            ICONS: 'files/icons'
+            ROOT: 'files',
+            ICONS: 'files/icons',
+            IMAGES: 'files/images'
         }
     });
 
@@ -104,6 +106,15 @@
                         templateUrl: 'tpl/upload.html',
                         controller: 'UploadController',
                         controllerAs: 'upCtrl',
+                        data: {
+                            requireAuth: true
+                        }
+                    })
+                    .defineState('files', {
+                        url: '/files',
+                        templateUrl: 'tpl/files_list.html',
+                        controller: 'FilesController',
+                        controllerAs: 'fileCtrl',
                         data: {
                             requireAuth: true
                         }
